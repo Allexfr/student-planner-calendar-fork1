@@ -14,10 +14,15 @@
     [ngClass]="{
       'outside-month': !isCurrentMonth(day),
       'selected-day': isSelectedDate(day),
+      today: isToday(day),
     }"
   >
     <div class="day-number">
       {{ day.getDate() }}
+    </div>
+
+    <div class="event-preview-container">
+      <div class="event-preview">No Events</div>
     </div>
   </div>
 </div>

@@ -74,4 +74,10 @@ export class MonthView implements OnChanges {
     return date.toDateString() === this.selectedDate.toDateString();
   }
 
+  //This checks if the selected cell is today's date
+  isToday(date: Date): boolean {
+    const today = new Date();
+    return date.toDateString() === today.toDateString();
+  }
+
 }
