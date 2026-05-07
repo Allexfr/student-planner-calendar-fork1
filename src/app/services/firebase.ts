@@ -4,6 +4,8 @@ import { getAuth } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
 import { getFirestore } from 'firebase/firestore';
 import { onAuthStateChanged, User, signOut } from 'firebase/auth'; //allows for the user to logout of account/tracks state of user (signed in/signed out)
+import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
+
 
 //stores the Firebase connection info
 const firebaseConfig = {
@@ -42,5 +44,29 @@ export class FirebaseService {
   async logoutUser(): Promise<void>{
     await signOut(this.auth);
   }
+
+  async saveEvent(eventData: any): Promise<void> {
+    await addDoc(
+      collection(this.firestore, 'events'),
+      eventData
+    );
+  }
+
+  // Loads all events belonging to the currently logged in user
+async getUserEvents(userId: string): Promise<any[]> {
+
+  const eventsQuery = query(
+    collection(this.firestore, 'events'),
+    where('userId', '==', userId)
+  );
+
+  const querySnapshot = await getDocs(eventsQuery);
+
+  return querySnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
+
+}
 
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { FirebaseService } from '../../services/firebase';
 import { CommonModule } from '@angular/common';
@@ -15,7 +15,7 @@ import { CalendarEvent } from '../../models/calendar-event';
 })
 
 //gives the calendar page access to the Firebase user login data
-export class Calendar {
+export class Calendar implements OnInit {
 
   //Stores the moth currently being displayed
   currentDate: Date = new Date();
@@ -73,9 +73,38 @@ export class Calendar {
     this.showEventForm = false;
   }
 
-  addEvent(newEvent: CalendarEvent): void{
-    this.events.push(newEvent);
-    this.showEventForm = false;
+  // Saves a newly created event into Firestore and updates the UI
+async addEvent(newEvent: CalendarEvent): Promise<void> {
+
+  const currentUser = this.firebaseService.currentUser;
+
+  if (!currentUser) {
+    return;
+  }
+
+  const eventWithUser = {
+    ...newEvent,
+    userId: currentUser.uid
+  };
+
+  await this.firebaseService.saveEvent(eventWithUser);
+
+  this.events.push(eventWithUser);
+
+  this.showEventForm = false;
+
+}
+
+  async ngOnInit(): Promise<void> {
+    const currentUser = this.firebaseService.currentUser;
+
+    if (!currentUser) {
+      return;
+    }
+
+    this.events = await this.firebaseService.getUserEvents(
+      currentUser.uid
+    );
   }
 
 }
