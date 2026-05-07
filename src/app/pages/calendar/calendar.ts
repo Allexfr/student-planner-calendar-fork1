@@ -4,6 +4,7 @@ import { FirebaseService } from '../../services/firebase';
 import { CommonModule } from '@angular/common';
 import { MonthView } from '../../components/month-view/month-view';
 import { EventForm } from '../../components/event-form/event-form';
+import { CalendarEvent } from '../../models/calendar-event';
 
 
 @Component({
@@ -24,6 +25,8 @@ export class Calendar {
 
   //turns add even on and off for visiblity
   showEventForm: boolean = false;
+
+  events: CalendarEvent[] =[];
 
   constructor(
     public firebaseService: FirebaseService,
@@ -69,4 +72,10 @@ export class Calendar {
   closeEventForm(): void {
     this.showEventForm = false;
   }
+
+  addEvent(newEvent: CalendarEvent): void{
+    this.events.push(newEvent);
+    this.showEventForm = false;
+  }
+
 }

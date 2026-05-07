@@ -22,7 +22,13 @@
     </div>
 
     <div class="event-preview-container">
-      <div class="event-preview">No Events</div>
+      <div
+        class="event-preview"
+        *ngFor="let event of getEventsForDay(day)"
+        [style.backgroundColor]="event.color"
+      >
+        {{ event.title }}
+      </div>
     </div>
   </div>
 </div>

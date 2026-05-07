@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnChanges, input } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { CalendarEvent } from '../../models/calendar-event';
+
 
 @Component({
   selector: 'app-month-view',
@@ -16,6 +18,9 @@ export class MonthView implements OnChanges {
 
   //recieves the selected day from the parent calendar page
   @Input() selectedDate!: Date;
+
+  //Receives the calendar events from the parent calendar page
+  @Input() events: CalendarEvent[] = [];
 
   //Sends the clicked day back to the parent calendar page
   @Output() dateSelected = new EventEmitter<Date>();
@@ -78,6 +83,12 @@ export class MonthView implements OnChanges {
   isToday(date: Date): boolean {
     const today = new Date();
     return date.toDateString() === today.toDateString();
+  }
+
+  getEventsForDay(date: Date): CalendarEvent[] {
+    return this.events.filter(event =>
+      event.date === date.toDateString()  
+    );
   }
 
 }

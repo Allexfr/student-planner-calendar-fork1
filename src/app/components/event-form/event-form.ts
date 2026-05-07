@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { CalendarEvent } from '../../models/calendar-event';
 
 
 @Component({
@@ -18,6 +19,8 @@ export class EventForm {
 
   //Sends a cancel message back to the parent page
   @Output() cancelForm = new EventEmitter<void>();
+
+  @Output() saveNewEvent = new EventEmitter<CalendarEvent>();
 
   timeOptions: string [] = [
     '7:00 AM',
@@ -70,21 +73,22 @@ export class EventForm {
 
   //Temp saving point for test
   saveEvent(): void {
-    console.log('Event form submitted');
-
-    console.log({
-      title: this.title, 
-      date: this.selectedDate,
-      startTime: this.startTime,
-      endTime: this.endTime,
-      color: this.color,
-      details: this.details
-    });
+      const newEvent: CalendarEvent = {
+        title: this.title, 
+        date: this.selectedDate.toDateString(),
+        startTime: this.startTime,
+        endTime: this.endTime,
+        color: this.color,
+        details: this.details
+      };
+    this.saveNewEvent.emit(newEvent);
 
   }
 
   cancel(): void{
     this.cancelForm.emit();
   }
+
+  
 
 }
