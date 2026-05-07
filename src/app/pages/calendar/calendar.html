@@ -1,22 +1,53 @@
-<div class="container mt-5">
-  <div class="d-flex justify-content-between align-items-center">
+<!-- Main calendar page container -->
+<div class="container-fluid mt-4">
+  <!-- Top section with user info and logout -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
     <div>
-      <!-- Main Calendar Page Container -->
-      <h2>Calendar Page</h2>
+      <h2>Student Planner Calendar</h2>
 
-      <!--Displays logged in user info-->
-      <p>
-        Logged in as :
+      <p class="mb-0">
+        Logged in as:
         {{ firebaseService.currentUser?.email }}
       </p>
     </div>
 
-    <!-- Logout button -->
     <button class="btn btn-danger" (click)="logout()">Logout</button>
   </div>
 
-  <hr />
+  <!-- Month navigation controls -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-secondary" (click)="previousMonth()">Previous</button>
 
-  <!-- Placeholder for future calendar views -->
-  <h4>Calendar views coming next</h4>
+    <h3>
+      {{ currentDate | date: 'MMMM yyyy' }}
+    </h3>
+
+    <button class="btn btn-secondary" (click)="nextMonth()">Next</button>
+  </div>
+
+  <!-- Main calendar layout -->
+  <div class="row">
+    <!-- Month grid area -->
+    <div class="col-md-9">
+      <app-month-view
+        [currentDate]="currentDate"
+        [selectedDate]="selectedDate"
+        (dateSelected)="onDateSelected($event)"
+      >
+      </app-month-view>
+    </div>
+
+    <!-- Selected day sidebar -->
+    <div class="col-md-3">
+      <div class="card p-3 shadow-sm">
+        <h4>Selected Day</h4>
+
+        <p>
+          {{ selectedDate | date: 'fullDate' }}
+        </p>
+
+        <button class="btn btn-primary w-100">Add Event</button>
+      </div>
+    </div>
+  </div>
 </div>

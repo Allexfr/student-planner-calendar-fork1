@@ -1,21 +1,54 @@
 import { Component } from '@angular/core';
 import { Router } from "@angular/router";
 import { FirebaseService } from '../../services/firebase';
+import { CommonModule } from '@angular/common';
+import { MonthView } from '../../components/month-view/month-view';
+
 
 
 @Component({
   selector: 'app-calendar',
-  imports: [],
+  imports: [CommonModule, MonthView],
   templateUrl: './calendar.html',
   styleUrl: './calendar.css',
 })
 
-//gives the calendar page access to teh Firebase user login data
+//gives the calendar page access to the Firebase user login data
 export class Calendar {
+
+  //Stores the moth currently being displayed
+  currentDate: Date = new Date();
+
+  //Stores the day currently selected by the user
+  selectedDate: Date = new Date();
+
   constructor(
     public firebaseService: FirebaseService,
     private router:  Router
   ) {}
+
+  //moves the calendar back one month
+  previousMonth(): void{
+    this.currentDate = new Date(
+      this.currentDate.getFullYear(),
+      this.currentDate.getMonth() -1,
+      1
+    );
+  }
+
+  //moves the calendar forward one month
+  nextMonth(): void {
+    this.currentDate = new Date(
+      this.currentDate.getFullYear(),
+      this.currentDate.getMonth() +1,
+      1
+    );
+  }
+
+  //Updates the selected date when the child component sends a clicked day
+  onDateSelected(date: Date): void{
+    this.selectedDate = date;
+  }
 
   //Logs the user out and returns to home page
   async logout(): Promise<void>{
