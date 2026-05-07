@@ -1,9 +1,90 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-event-form',
-  imports: [],
+  imports:[CommonModule, FormsModule],
+
   templateUrl: './event-form.html',
-  styleUrl: './event-form.css',
+  styleUrl: './event-form.css'
 })
-export class EventForm {}
+
+export class EventForm {
+
+  //Recieves the selected date from the parent calendar page
+  @Input() selectedDate!: Date;
+
+  //Sends a cancel message back to the parent page
+  @Output() cancelForm = new EventEmitter<void>();
+
+  timeOptions: string [] = [
+    '7:00 AM',
+    '7:30 AM',
+    '8:00 AM',
+    '8:30 AM',
+    '9:00 AM',
+    '9:30 AM',
+    '10:00 AM',
+    '10:30 AM',
+    '11:00 AM',
+    '11:30 AM',
+    '12:00 PM',
+    '12:30 PM',
+    '1:00 PM',
+    '1:30 PM',
+    '2:00 PM',
+    '2:30 PM',
+    '3:00 PM',
+    '3:30 PM',
+    '4:00 PM',
+    '4:30 PM',
+    '5:00 PM',
+    '5:30 PM',
+    '6:00 PM',
+    '6:30 PM',
+    '7:00 PM',
+    '7:30 PM',
+    '8:00 PM',
+    '8:30 PM',
+    '9:00 PM',
+    '9:30 PM',
+    '10:00 PM'
+  ];
+
+  colorOptions: string[] = [
+    'blue',
+    'green',
+    'red',
+    'purple',
+    'orange'
+  ];
+
+  //Stores form input values
+  title: string = '';
+  startTime: string = '8:00 AM';
+  endTime: string = '9:00 AM';
+  color: string = 'blue';
+  details: string = '';
+
+  //Temp saving point for test
+  saveEvent(): void {
+    console.log('Event form submitted');
+
+    console.log({
+      title: this.title, 
+      date: this.selectedDate,
+      startTime: this.startTime,
+      endTime: this.endTime,
+      color: this.color,
+      details: this.details
+    });
+
+  }
+
+  cancel(): void{
+    this.cancelForm.emit();
+  }
+
+}

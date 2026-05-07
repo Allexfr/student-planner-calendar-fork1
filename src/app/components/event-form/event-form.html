@@ -1,1 +1,68 @@
-<p>event-form works!</p>
+<!-- Event form card -->
+<div class="card p-3 shadow-sm">
+  <!-- Event form title -->
+  <h4 class="mb-3">Add Event</h4>
+
+  <!-- Shows which day the event is being added to -->
+  <p>
+    Date:
+    {{ selectedDate | date: 'fullDate' }}
+  </p>
+
+  <!-- Event creation form -->
+  <form (ngSubmit)="saveEvent()">
+    <!-- Event title input -->
+    <div class="mb-3">
+      <label class="form-label"> Event Title </label>
+
+      <input type="text" class="form-control" [(ngModel)]="title" name="title" required />
+    </div>
+
+    <!-- Start time dropdown -->
+    <div class="mb-3">
+      <label class="form-label"> Start Time </label>
+
+      <select class="form-select" [(ngModel)]="startTime" name="startTime">
+        <option *ngFor="let time of timeOptions" [value]="time">
+          {{ time }}
+        </option>
+      </select>
+    </div>
+
+    <!-- End time dropdown -->
+    <div class="mb-3">
+      <label class="form-label"> End Time </label>
+
+      <select class="form-select" [(ngModel)]="endTime" name="endTime">
+        <option *ngFor="let time of timeOptions" [value]="time">
+          {{ time }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Event color dropdown -->
+    <div class="mb-3">
+      <label class="form-label"> Event Color </label>
+
+      <select class="form-select" [(ngModel)]="color" name="color">
+        <option *ngFor="let color of colorOptions" [value]="color">
+          {{ color }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Event details textbox -->
+    <div class="mb-3">
+      <label class="form-label"> Details </label>
+
+      <textarea class="form-control" rows="3" [(ngModel)]="details" name="details"></textarea>
+    </div>
+
+    <!-- Form action buttons -->
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-primary">Save Event</button>
+
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

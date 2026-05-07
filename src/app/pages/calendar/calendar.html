@@ -46,7 +46,13 @@
           {{ selectedDate | date: 'fullDate' }}
         </p>
 
-        <button class="btn btn-primary w-100">Add Event</button>
+        <button class="btn btn-primary w-100" (click)="openEventForm()">Add Event</button>
+        <div class="mt-3" *ngIf="showEventForm">
+          <app-event-form
+            [selectedDate]="selectedDate"
+            (cancelForm)="(closeEventForm)"
+          ></app-event-form>
+        </div>
       </div>
     </div>
   </div>

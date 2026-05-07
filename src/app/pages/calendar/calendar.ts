@@ -3,12 +3,12 @@ import { Router } from "@angular/router";
 import { FirebaseService } from '../../services/firebase';
 import { CommonModule } from '@angular/common';
 import { MonthView } from '../../components/month-view/month-view';
-
+import { EventForm } from '../../components/event-form/event-form';
 
 
 @Component({
   selector: 'app-calendar',
-  imports: [CommonModule, MonthView],
+  imports: [CommonModule, MonthView, EventForm],
   templateUrl: './calendar.html',
   styleUrl: './calendar.css',
 })
@@ -21,6 +21,9 @@ export class Calendar {
 
   //Stores the day currently selected by the user
   selectedDate: Date = new Date();
+
+  //turns add even on and off for visiblity
+  showEventForm: boolean = false;
 
   constructor(
     public firebaseService: FirebaseService,
@@ -55,5 +58,15 @@ export class Calendar {
     await this.firebaseService.logoutUser();
 
     this.router.navigate(['/']);
+  }
+
+  // Shows the add event 
+  openEventForm(): void{
+    this.showEventForm = true;
+  }
+
+  // Hides the add event
+  closeEventForm(): void {
+    this.showEventForm = false;
   }
 }
