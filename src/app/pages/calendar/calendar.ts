@@ -33,6 +33,18 @@ export class Calendar implements OnInit {
     private router:  Router
   ) {}
 
+  async ngOnInit(): Promise<void> {
+    const currentUser = this.firebaseService.currentUser;
+
+    if(!currentUser) {
+      return;
+    }
+
+    this.events = await this.firebaseService.getUserEvents(
+      currentUser.uid
+    );
+  }
+
   //moves the calendar back one month
   previousMonth(): void{
     this.currentDate = new Date(
@@ -74,6 +86,7 @@ export class Calendar implements OnInit {
   }
 
   // Saves a newly created event into Firestore and updates the UI
+// Saves a newly created event into Firebase and updates the calendar UI
 async addEvent(newEvent: CalendarEvent): Promise<void> {
 
   const currentUser = this.firebaseService.currentUser;
@@ -94,17 +107,5 @@ async addEvent(newEvent: CalendarEvent): Promise<void> {
   this.showEventForm = false;
 
 }
-
-  async ngOnInit(): Promise<void> {
-    const currentUser = this.firebaseService.currentUser;
-
-    if (!currentUser) {
-      return;
-    }
-
-    this.events = await this.firebaseService.getUserEvents(
-      currentUser.uid
-    );
-  }
 
 }
