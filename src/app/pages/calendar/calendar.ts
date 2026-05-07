@@ -1,10 +1,26 @@
 import { Component } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { Router } from "@angular/router";
+import { FirebaseService } from '../../services/firebase';
+
 
 @Component({
   selector: 'app-calendar',
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './calendar.html',
   styleUrl: './calendar.css',
 })
-export class Calendar {}
+
+//gives the calendar page access to teh Firebase user login data
+export class Calendar {
+  constructor(
+    public firebaseService: FirebaseService,
+    private router:  Router
+  ) {}
+
+  //Logs the user out and returns to home page
+  async logout(): Promise<void>{
+    await this.firebaseService.logoutUser();
+
+    this.router.navigate(['/']);
+  }
+}

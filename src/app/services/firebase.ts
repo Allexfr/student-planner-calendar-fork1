@@ -3,6 +3,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
 import { getFirestore } from 'firebase/firestore';
+import { onAuthStateChanged, User, signOut } from 'firebase/auth'; //allows for the user to logout of account/tracks state of user (signed in/signed out)
 
 //stores the Firebase connection info
 const firebaseConfig = {
@@ -25,4 +26,21 @@ export class FirebaseService {
   
   //Gives the app access to the Firestore database
   firestore = getFirestore(app);
+
+   //stores the currently logged in user
+  currentUser: User | null = null;
+
+ //watches for when the user logs in or out specifically for changes of user state
+  constructor() {
+    onAuthStateChanged(this.auth, (user) => {
+      //updates the current user when something changes in authentication
+      this.currentUser = user;
+
+    });
+  }
+//logs the user out of Firebase
+  async logoutUser(): Promise<void>{
+    await signOut(this.auth);
+  }
+
 }
